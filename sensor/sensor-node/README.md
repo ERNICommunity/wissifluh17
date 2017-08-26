@@ -3,6 +3,32 @@ Wiring / Arduino framework based Embedded Application for PM data measurement se
 
 The project builds for Adafruit Feather M0 / LoRa by default and could also be compiledfor and run on an Arduino Mega 2560 with Dragino LoRa Shield. 
 
+## Toolchain
+[PlatformIO](http://platformio.org "Cross-platform build system") is the ideal foundation when developing IoT devices. It supports cross-platform development for many different controller boards widely used in the maker field and also for industrial applications.
+
+### Installation
+#### Python 2.7
+
+**Windows**
+
+* download Python 2.7.x from: https://www.python.org/downloads/
+* install for all users
+* select destinationdirectory (keep default): C:\Python27\
+* add python.exe to path
+
+**Linux**
+
+Install Python 2.7 using your package manager.
+
+#### PlatformIO
+Install PlatformIO using the Python Package Manager
+(see also http://docs.platformio.org/en/latest/installation.html#python-package-manager):
+
+* in a cmd shell enter: `pip install -U platformio`
+* upgrade pip, in the cmd shell enter: `python -m pip install --upgrade pip`
+* upgrade PlatformIO, in the cmd shell enter: `pio upgrade`
+ 
+
 ## How to build for Eclipse CDT
   1. Open a command shell in this folder (i.e. `C:\wissifluh17\sensor\sensor-node`)
   2. Run the command `pio init --ide eclipse`
