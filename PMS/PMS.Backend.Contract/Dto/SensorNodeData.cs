@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PMS.Backend.Model
+namespace PMS.Backend.Contract.Dto
 {
     public class SensorNodeData
     {

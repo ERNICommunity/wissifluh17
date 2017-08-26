@@ -1,4 +1,4 @@
-﻿using PMS.Backend.Model;
+﻿using PMS.Backend.Contract.Dto;
 using System;
 using System.Collections.Generic;
 
