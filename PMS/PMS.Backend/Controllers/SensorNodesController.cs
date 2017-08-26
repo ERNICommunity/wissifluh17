@@ -4,24 +4,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PMS.Backend.Mocks;
-using PMS.Backend.Model;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PMS.Backend.Controllers
 {
     [Route("api/[controller]")]
-    public class HotspotDataController : Controller
+    public class SensorNodesController : Controller
     {
+        // GET: api/values
+        [HttpGet]
+        public JsonResult Get()
+        {
+            return Json(SensorNodeMocks.SensorNodes);
+        }
+
         // GET api/values/5
         [HttpGet("{id}")]
         public JsonResult Get(Guid id)
         {
-            var hotspotData = HotspotDataMocks.HotspotData.Where(d => d.HotspotId == id);
-            if (hotspotData == null)
-                return Json(Enumerable.Empty<HotspotData>());
-
-            return Json(HotspotDataMocks.HotspotData);
+            var sensorNode = SensorNodeMocks.SensorNodes.SingleOrDefault(h => h.Id == id);
+            return Json(sensorNode);
         }
 
         // POST api/values

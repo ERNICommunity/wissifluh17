@@ -2,7 +2,7 @@
 
 namespace PMS.Backend.Model
 {
-    public class HotspotData
+    public class SensorNodeData
     {
         public int Id { get; set; }
 
