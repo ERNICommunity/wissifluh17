@@ -21,9 +21,10 @@ namespace PMS.Backend.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public JsonResult Get(Guid id)
         {
-            return "value";
+            var hotspot = HotspotMocks.Hotspots.SingleOrDefault(h => h.Id == id);
+            return Json(hotspot);
         }
 
         // POST api/values
