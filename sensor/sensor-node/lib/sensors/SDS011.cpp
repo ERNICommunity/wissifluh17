@@ -11,19 +11,29 @@
 void SDS011::pollSerialData() {
   if (m_serial->available())
   {
-	  m_data[m_readIndex] = (uint8_t)m_serial->read();
-	  m_readIndex++;
+	  uint8_t value = (uint8_t)m_serial->read();
+	  if (! (m_readIndex == 0 && value != 170))
+	  {
+		  // first value must be always 170, otherwise skip value
+		  m_data[m_readIndex] = value;
+		  m_readIndex++;
+	  }
   }
   if (m_readIndex == 10)
   {
-	  double pm25 = (double)(((int)m_data[3])*256 +((int)m_data[2]))/10;
-	  double pm10 = (double)(((int)m_data[5])*256 +((int)m_data[4]))/10;
-	  storeToBuffer(pm10, pm25);
-	  Serial.print("PM25: ");
-	  Serial.print(pm25);
-	  Serial.print("        PM10: ");
-	  Serial.println(pm10);
-	  m_readIndex = 0;
+	  if (validateChecksum()) {
+		  double pm25 = (double)(((int)m_data[3])*256 +((int)m_data[2]))/10;
+		  double pm10 = (double)(((int)m_data[5])*256 +((int)m_data[4]))/10;
+		  storeToBuffer(pm10, pm25);
+		  Serial.print("PM25: ");
+		  Serial.print(pm25);
+		  Serial.print("        PM10: ");
+		  Serial.println(pm10);
+		  m_readIndex = 0;
+	  }
+	  else {
+		  Serial.println("Checksum failed");
+	  }
   }
 }
 
@@ -44,6 +54,11 @@ double SDS011::getPm25Average() {
 		average += m_pm25[i];
 	}
 	return average;
+}
+
+bool SDS011::validateChecksum() {
+	uint8_t checksum = m_data[2] + m_data[3] + m_data[4] + m_data[5] + m_data[6] + m_data[7];
+	return (checksum == m_data[8]);
 }
 
 void SDS011::storeToBuffer(double pm10, double pm25) {

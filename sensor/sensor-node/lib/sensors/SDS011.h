@@ -36,6 +36,7 @@ public:
   double getPm25Average();
 
 private:
+  bool validateChecksum();
   void storeToBuffer(double pm10, double pm25);
 
 private:
