@@ -63,7 +63,7 @@ public:
   {
     if ((0 != m_hmi) && (0 != m_temperatureHumidity))
     {
-      m_hmi->updateDisplay(m_temperatureHumidity->getTemperature(), m_temperatureHumidity->getRelHumidity());
+      m_hmi->updateDisplay(m_temperatureHumidity->getRelHumidity(), m_temperatureHumidity->getTemperature());
     }
   }
 };
