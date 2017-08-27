@@ -86,7 +86,7 @@ TemperatureHumidity::TemperatureHumidity(TemperatureHumidityAdapter* temperature
   // DHT22: Set delay between sensor readings based on sensor details.
   sensor_t sensor;
   m_dht->temperature().getSensor(&sensor);
-  m_delayMs = sensor.min_delay / 1000;
+//  m_delayMs = sensor.min_delay / 1000;
   m_dhtPollTimer->startTimer(m_delayMs);
 }
 
@@ -107,7 +107,7 @@ void TemperatureHumidity::setRelHumidity(float relHumidity)
   m_relHumidity = relHumidity;
   if (0 != m_temperatureHumidityAdapter)
   {
-    m_temperatureHumidityAdapter->notifyValueChanged();
+    m_temperatureHumidityAdapter->notifyRelHumidityChanged(relHumidity);
   }
 }
 
@@ -116,7 +116,7 @@ void TemperatureHumidity::setTemperature(float temperature)
   m_temperature = temperature;
   if (0 != m_temperatureHumidityAdapter)
   {
-    m_temperatureHumidityAdapter->notifyValueChanged();
+    m_temperatureHumidityAdapter->notifyTemperatureChanged(temperature);
   }
 }
 

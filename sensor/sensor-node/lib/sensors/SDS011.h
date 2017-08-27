@@ -10,16 +10,23 @@
 
 #include <Arduino.h>
 
+class PmAdapter
+{
+public:
+  virtual ~PmAdapter() { }
+  virtual void notifyPmChanged(float pm10, float pm25) = 0;
+};
 
 class SDS011
 {
 public:
-  SDS011(HardwareSerial* serial)
+  SDS011(HardwareSerial* serial, PmAdapter* pmAdapter = 0)
   : m_serial(serial)
   , m_readIndex(0)
   , m_data()
   , m_pm10()
   , m_pm25()
+  , m_pmAdapter(pmAdapter)
   {  }
 
   virtual ~SDS011() {}
@@ -47,6 +54,8 @@ private:
   static const uint8_t BUFFER_SIZE = 60;  // Buffer for average calculation
   double m_pm10[BUFFER_SIZE];
   double m_pm25[BUFFER_SIZE];
+
+  PmAdapter* m_pmAdapter;
 };
 
 

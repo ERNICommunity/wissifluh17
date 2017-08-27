@@ -16,10 +16,20 @@ public:
   Hmi();
   virtual ~Hmi();
 
-  void updateDisplay(float relHumidity, float temperature);
+  void setRelHumidity(float relHumidity);
+  void setTemperature(float temperature);
+  void setPm(float pm10Average, float pm25Average);
+
+private:
+  void updateDisplayRelHumidityTemperature();
+  void updateDisplayPm();
 
 private:
   LcdKeypad* m_lcdKeypad;
+  float m_relHumidity;
+  float m_temperature;
+  float m_pm10;
+  float m_pm25;
 
 private: // forbidden default functions
   Hmi& operator = (const Hmi& src); // assignment operator

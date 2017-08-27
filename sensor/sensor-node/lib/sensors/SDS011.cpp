@@ -69,8 +69,8 @@ void SDS011::storeToBuffer(double pm10, double pm25) {
 	if (bufferIndex >= BUFFER_SIZE) {
 		bufferIndex = 0;
 	}
+	if (0 != m_pmAdapter)
+	{
+	  m_pmAdapter->notifyPmChanged(pm10, pm25);
+	}
 }
-
-
-
-

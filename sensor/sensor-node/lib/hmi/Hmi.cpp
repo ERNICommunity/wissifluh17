@@ -44,6 +44,10 @@ public:
 
 Hmi::Hmi()
 : m_lcdKeypad(new LcdKeypad())
+, m_relHumidity(0.0)
+, m_temperature(0.0)
+, m_pm10(0.0)
+, m_pm25(0.0)
 {
   m_lcdKeypad->attachAdapter(new MyLcdKeypadAdapter(m_lcdKeypad));
   m_lcdKeypad->setBackLightOn(true);
@@ -55,12 +59,40 @@ Hmi::~Hmi()
   m_lcdKeypad = 0;
 }
 
-void Hmi::updateDisplay(float relHumidity, float temperature)
+void Hmi::setRelHumidity(float relHumidity)
+{
+  m_relHumidity = relHumidity;
+}
+
+void Hmi::setTemperature(float temperature)
+{
+  m_temperature = temperature;
+  updateDisplayRelHumidityTemperature();
+}
+
+void Hmi::setPm(float pm10, float pm25)
+{
+  m_pm10 = pm10;
+  m_pm25 = pm25;
+  updateDisplayPm();
+}
+
+void Hmi::updateDisplayRelHumidityTemperature()
 {
   m_lcdKeypad->setCursor(0, 0); // position the cursor at beginning of the first line
   m_lcdKeypad->print("Temp:  ");
-  m_lcdKeypad->print(temperature);
+  m_lcdKeypad->print(m_temperature);
   m_lcdKeypad->setCursor(0, 1); // position the cursor at beginning of the second line
   m_lcdKeypad->print("Humid: ");
-  m_lcdKeypad->print(relHumidity);
+  m_lcdKeypad->print(m_relHumidity);
+}
+
+void Hmi::updateDisplayPm()
+{
+  m_lcdKeypad->setCursor(0, 0); // position the cursor at beginning of the first line
+  m_lcdKeypad->print("PM 10:  ");
+  m_lcdKeypad->print(m_pm10);
+  m_lcdKeypad->setCursor(0, 1); // position the cursor at beginning of the second line
+  m_lcdKeypad->print("PM 2.5: ");
+  m_lcdKeypad->print(m_pm25);
 }

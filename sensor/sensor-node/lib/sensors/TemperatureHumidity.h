@@ -24,7 +24,8 @@ class Timer;
 class TemperatureHumidityAdapter
 {
 public:
-  virtual void notifyValueChanged() = 0;
+  virtual void notifyTemperatureChanged(float temperature) = 0;
+  virtual void notifyRelHumidityChanged(float relHumidity) = 0;
   virtual ~TemperatureHumidityAdapter() { }
 };
 

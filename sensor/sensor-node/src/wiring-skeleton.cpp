@@ -14,7 +14,6 @@
 #include <DHT.h>
 #include <DHT_U.h>
 
-
 // private libraries
 #include <LcdKeypad.h>
 #include <lmic.h>
@@ -33,6 +32,8 @@
 #include <TemperatureHumidity.h>
 #include <Hmi.h>
 
+#define HMI 0
+
 #ifndef BUILTIN_LED
 #define BUILTIN_LED 13
 #endif
@@ -42,46 +43,73 @@ SDS011* pmSensor = 0;
 TemperatureHumidity* temperatureHumidity = 0;
 Hmi* hmi = 0;
 
+//-----------------------------------------------------------------------------
+
 class MyTemperatureHumidityAdapter : public TemperatureHumidityAdapter
 {
 private:
   Hmi* m_hmi;
-  TemperatureHumidity* m_temperatureHumidity;
 
 public:
   MyTemperatureHumidityAdapter(Hmi* hmi)
   : m_hmi(hmi)
-  , m_temperatureHumidity(0)
   { }
 
-  void attachTemeperatureHumidity(TemperatureHumidity* temperatureHumidity)
+  void notifyTemperatureChanged(float temperature)
   {
-    m_temperatureHumidity = temperatureHumidity;
+    if (0 != m_hmi)
+    {
+      m_hmi->setTemperature(temperature);
+    }
   }
 
-  void notifyValueChanged()
+  void notifyRelHumidityChanged(float relHumidity)
   {
-    if ((0 != m_hmi) && (0 != m_temperatureHumidity))
+    if (0 != m_hmi)
     {
-      m_hmi->updateDisplay(m_temperatureHumidity->getRelHumidity(), m_temperatureHumidity->getTemperature());
+      m_hmi->setRelHumidity(relHumidity);
     }
   }
 };
+
+//-----------------------------------------------------------------------------
+
+class MyPmAdapter : public PmAdapter
+{
+private:
+  Hmi* m_hmi;
+
+public:
+  MyPmAdapter(Hmi* hmi)
+  : m_hmi(hmi)
+  { }
+
+  void notifyPmChanged(float pm10, float pm25)
+  {
+    if (0 != m_hmi)
+    {
+      m_hmi->setPm(pm10, pm25);
+    }
+  }
+};
+
+//-----------------------------------------------------------------------------
 
 void setup()
 {
   pinMode(BUILTIN_LED, OUTPUT);
   digitalWrite(BUILTIN_LED, 0);
 
-  pmSensor = new SDS011(&Serial1);
-  pmSensor->init(9600);
-
   setupProdDebugEnv();
 
+#if HMI
   hmi = new Hmi();
-  MyTemperatureHumidityAdapter* temperatureHumidityAdapter = new MyTemperatureHumidityAdapter(hmi);
-  temperatureHumidity = new TemperatureHumidity(temperatureHumidityAdapter);
-  temperatureHumidityAdapter->attachTemeperatureHumidity(temperatureHumidity);
+#endif
+
+  pmSensor = new SDS011(&Serial1, new MyPmAdapter(hmi));
+  pmSensor->init(9600);
+
+  temperatureHumidity = new TemperatureHumidity(new MyTemperatureHumidityAdapter(hmi));
 }
 
 void loop()
@@ -90,8 +118,6 @@ void loop()
   {
     sCmd->readSerial();     // process serial commands
   }
-
   pmSensor->pollSerialData();
-
   yield();                  // process Timers
 }
