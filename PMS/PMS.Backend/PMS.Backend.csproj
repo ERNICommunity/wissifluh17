@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PMS.Backend.Contract\PMS.Backend.Contract.csproj" />
+    <ProjectReference Include="..\PMS.Backend.Data\PMS.Backend.Data.csproj" />
+    <ProjectReference Include="..\PMS.Backend.Implementation\PMS.Backend.Implementation.csproj" />
   </ItemGroup>
 
 </Project>

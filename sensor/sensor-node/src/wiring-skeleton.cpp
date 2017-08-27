@@ -29,6 +29,7 @@
 #include <AppDebug.h>
 #include <ProductDebug.h>
 #include <RamUtils.h>
+#include <SDS011.h>
 #include <TemperatureHumidity.h>
 
 #ifndef BUILTIN_LED
@@ -37,6 +38,7 @@
 
 SerialCommand* sCmd = 0;
 LcdKeypad* myLcdKeypad = 0;
+SDS011* pmSensor = 0;
 TemperatureHumidity* temperatureHumidity = 0;
 
 //-----------------------------------------------------------------------------
@@ -82,6 +84,9 @@ void setup()
   pinMode(BUILTIN_LED, OUTPUT);
   digitalWrite(BUILTIN_LED, 0);
 
+  pmSensor = new SDS011(&Serial1);
+  pmSensor->init(9600);
+
   setupProdDebugEnv();
 
   temperatureHumidity = new TemperatureHumidity();
@@ -97,5 +102,8 @@ void loop()
   {
     sCmd->readSerial();     // process serial commands
   }
+
+  pmSensor->pollSerialData();
+
   yield();                  // process Timers
 }
