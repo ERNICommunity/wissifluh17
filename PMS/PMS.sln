@@ -11,9 +11,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.MobileClient", "PMS.Mob
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.MobileClient.Android", "PMS.MobileClient.Android\PMS.MobileClient.Android.csproj", "{FD96A9ED-27AA-4BD1-8DBE-6AFB0266EC3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Backend.Data", "PMS.Backend.Data\PMS.Backend.Data.csproj", "{A13FB537-9D34-4278-9A80-5498AECDE379}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Backend.Data", "PMS.Backend.Data\PMS.Backend.Data.csproj", "{A13FB537-9D34-4278-9A80-5498AECDE379}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Backend.Contract", "PMS.Backend.Contract\PMS.Backend.Contract.csproj", "{CAB5DDD3-D8B9-4AC7-AC4C-EC8796C5FDE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMS.Backend.Contract", "PMS.Backend.Contract\PMS.Backend.Contract.csproj", "{CAB5DDD3-D8B9-4AC7-AC4C-EC8796C5FDE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Backend.DomainModel", "PMS.Backend.DomainModel\PMS.Backend.DomainModel.csproj", "{2A31EB4B-F7A5-4967-807C-797B32C8605F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Backend.Implementation", "PMS.Backend.Implementation\PMS.Backend.Implementation.csproj", "{00AAAA5E-A854-47DF-8CBA-44C7C0E026F2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{29DC6915-8964-4D3E-9A1D-BD8CB77820DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,9 +53,22 @@ Global
 		{CAB5DDD3-D8B9-4AC7-AC4C-EC8796C5FDE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAB5DDD3-D8B9-4AC7-AC4C-EC8796C5FDE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAB5DDD3-D8B9-4AC7-AC4C-EC8796C5FDE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A31EB4B-F7A5-4967-807C-797B32C8605F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A31EB4B-F7A5-4967-807C-797B32C8605F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A31EB4B-F7A5-4967-807C-797B32C8605F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A31EB4B-F7A5-4967-807C-797B32C8605F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00AAAA5E-A854-47DF-8CBA-44C7C0E026F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00AAAA5E-A854-47DF-8CBA-44C7C0E026F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00AAAA5E-A854-47DF-8CBA-44C7C0E026F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00AAAA5E-A854-47DF-8CBA-44C7C0E026F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A13FB537-9D34-4278-9A80-5498AECDE379} = {29DC6915-8964-4D3E-9A1D-BD8CB77820DD}
+		{2A31EB4B-F7A5-4967-807C-797B32C8605F} = {29DC6915-8964-4D3E-9A1D-BD8CB77820DD}
+		{00AAAA5E-A854-47DF-8CBA-44C7C0E026F2} = {29DC6915-8964-4D3E-9A1D-BD8CB77820DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4912959C-E896-44B3-95F4-54B9E06982D2}

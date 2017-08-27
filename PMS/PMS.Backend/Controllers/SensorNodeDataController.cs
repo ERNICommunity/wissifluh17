@@ -3,6 +3,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using PMS.Backend.Mocks;
 using PMS.Backend.Contract.Dto;
+using PMS.Backend.Implementation;
+using PMS.Backend.Mappers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,7 +28,8 @@ namespace PMS.Backend.Controllers
         [HttpPost]
         public void Post([FromBody]SensorNodeData value)
         {
-
+            var mainService = new MainService();
+            mainService.AddSensorNodeData(value.ToSensorNodeData());
         }
 
         // PUT api/values/5

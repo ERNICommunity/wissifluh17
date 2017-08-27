@@ -6,6 +6,9 @@ namespace PMS.Backend.Data.Models
 {
     public class PmsDataContext : DbContext
     {
+        public PmsDataContext()
+        { }
+
         public PmsDataContext(DbContextOptions<PmsDataContext> options)
             : base(options)
         { }
