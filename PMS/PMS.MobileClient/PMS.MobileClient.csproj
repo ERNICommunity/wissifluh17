@@ -14,8 +14,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MvvmLightLibs" Version="5.3.0" />
+    <PackageReference Include="Xam.Plugin.Geolocator" Version="4.0.1" />
     <PackageReference Include="Xamarin.Forms" Version="2.3.4.267" />
     <PackageReference Include="Xamarin.Forms.Maps" Version="2.3.4.267" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PMS.Backend.Contract\PMS.Backend.Contract.csproj" />
   </ItemGroup>
 
 </Project>
