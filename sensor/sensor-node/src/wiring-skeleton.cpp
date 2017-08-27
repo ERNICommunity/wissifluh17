@@ -29,6 +29,7 @@
 #include <AppDebug.h>
 #include <ProductDebug.h>
 #include <RamUtils.h>
+#include <SDS011.h>
 
 #ifndef BUILTIN_LED
 #define BUILTIN_LED 13
@@ -36,6 +37,7 @@
 
 SerialCommand* sCmd = 0;
 LcdKeypad* myLcdKeypad = 0;
+SDS011* pmSensor = 0;
 
 //-----------------------------------------------------------------------------
 // DHT22 Sensor
@@ -149,6 +151,9 @@ void setup()
   pinMode(BUILTIN_LED, OUTPUT);
   digitalWrite(BUILTIN_LED, 0);
 
+  pmSensor = new SDS011(&Serial1);
+  pmSensor->init(9600);
+
   setupProdDebugEnv();
 
   dht = new DHT_Unified(DHTPIN, DHTTYPE);
@@ -171,5 +176,8 @@ void loop()
   {
     sCmd->readSerial();     // process serial commands
   }
+
+  pmSensor->pollSerialData();
+
   yield();                  // process Timers
 }
