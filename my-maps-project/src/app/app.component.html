@@ -1,0 +1,19 @@
+<h1>{{ title }}</h1>
+<p>
+  <li *ngFor="let location of locations">
+   {{location.lat}}
+   {{location.lng}}
+
+</li>
+</p>
+<p>Value : {{latitudeA}}  </p>
+<p>Value : {{longitudeA}}  </p>
+
+<!-- this creates a google map on the page with the given lat/lng from
+<agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+-->
+<!-- the component as the initial center of the map: -->
+<agm-map  [latitude]="latitudeA" [longitude]="longitudeA" [zoom]="zoom">
+  <agm-marker *ngFor="let location of locations" [latitude]="location.lat" [longitude]="location.lng" >
+  </agm-marker>
+</agm-map>
