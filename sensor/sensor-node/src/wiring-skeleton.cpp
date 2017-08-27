@@ -31,53 +31,42 @@
 #include <RamUtils.h>
 #include <SDS011.h>
 #include <TemperatureHumidity.h>
+#include <Hmi.h>
 
 #ifndef BUILTIN_LED
 #define BUILTIN_LED 13
 #endif
 
 SerialCommand* sCmd = 0;
-LcdKeypad* myLcdKeypad = 0;
 SDS011* pmSensor = 0;
 TemperatureHumidity* temperatureHumidity = 0;
+Hmi* hmi = 0;
 
-//-----------------------------------------------------------------------------
-// LCD Keypad Key Press Detection
-//-----------------------------------------------------------------------------
-class MyLcdKeypadAdapter : public LcdKeypadAdapter
+class MyTemperatureHumidityAdapter : public TemperatureHumidityAdapter
 {
 private:
-  LcdKeypad* m_lcdKeypad;
-  unsigned char m_value;
+  Hmi* m_hmi;
+  TemperatureHumidity* m_temperatureHumidity;
+
 public:
-  MyLcdKeypadAdapter(LcdKeypad* lcdKeypad)
-  : m_lcdKeypad(lcdKeypad)
-  , m_value(7)
+  MyTemperatureHumidityAdapter(Hmi* hmi)
+  : m_hmi(hmi)
+  , m_temperatureHumidity(0)
   { }
 
-  // Specific handleKeyChanged() method implementation - define your actions here
-  void handleKeyChanged(LcdKeypad::Key newKey)
+  void attachTemeperatureHumidity(TemperatureHumidity* temperatureHumidity)
   {
-    if (0 != m_lcdKeypad)
-    {
-      if (LcdKeypad::UP_KEY == newKey)
-      {
-        m_value++;
-      }
-      else if (LcdKeypad::DOWN_KEY == newKey)
-      {
-        m_value--;
-      }
+    m_temperatureHumidity = temperatureHumidity;
+  }
 
-      // RGB colored backlight: set according to the current value
-      // monochrome backlight: set backlight on or off according to the current value
-      m_lcdKeypad->setBacklight(static_cast<LcdKeypad::LcdBacklightColor>(LcdKeypad::LCDBL_WHITE & m_value));
+  void notifyValueChanged()
+  {
+    if ((0 != m_hmi) && (0 != m_temperatureHumidity))
+    {
+      m_hmi->updateDisplay(m_temperatureHumidity->getTemperature(), m_temperatureHumidity->getRelHumidity());
     }
   }
 };
-
-
-//-----------------------------------------------------------------------------
 
 void setup()
 {
@@ -89,11 +78,10 @@ void setup()
 
   setupProdDebugEnv();
 
-  temperatureHumidity = new TemperatureHumidity();
-
-  myLcdKeypad = new LcdKeypad();  // instatiate an object of the LcdKeypad class, using default parameters
-  myLcdKeypad->attachAdapter(new MyLcdKeypadAdapter(myLcdKeypad));
-  myLcdKeypad->setBackLightOn(true);
+  hmi = new Hmi();
+  MyTemperatureHumidityAdapter* temperatureHumidityAdapter = new MyTemperatureHumidityAdapter(hmi);
+  temperatureHumidity = new TemperatureHumidity(temperatureHumidityAdapter);
+  temperatureHumidityAdapter->attachTemeperatureHumidity(temperatureHumidity);
 }
 
 void loop()
