@@ -30,6 +30,14 @@ TemperatureHumidity::TemperatureHumidity()
 
 TemperatureHumidity::~TemperatureHumidity()
 {
-  // TODO Auto-generated destructor stub
+  delete m_dhtPollTimer->adapter();
+  m_dhtPollTimer->attachAdapter(0);
+
+  delete m_dhtPollTimer;
+  m_dhtPollTimer = 0;
+
+  delete m_dht;
+  m_dht = 0;
+
 }
 
