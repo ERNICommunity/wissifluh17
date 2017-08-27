@@ -15,7 +15,7 @@ namespace PMS.Backend.Controllers
         [HttpGet("{id}")]
         public JsonResult Get(Guid id)
         {
-            var sensorNodeData = SensorNodeDataMocks.SensorNodeData.Where(d => d.HotspotId == id);
+            var sensorNodeData = SensorNodeDataMocks.SensorNodeData.Where(d => d.SensorNodeId == id);
             if (sensorNodeData == null)
                 return Json(Enumerable.Empty<SensorNodeData>());
 
