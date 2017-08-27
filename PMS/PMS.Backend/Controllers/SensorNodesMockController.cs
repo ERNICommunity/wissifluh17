@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using PMS.Backend.Mocks;
 using PMS.Backend.Contract.Dto;
 using PMS.Backend.Implementation;
 using PMS.Backend.Mappers;
@@ -10,24 +11,29 @@ using PMS.Backend.Mappers;
 namespace PMS.Backend.Controllers
 {
     [Route("api/[controller]")]
-    public class SensorNodeDataController : Controller
+    public class SensorNodesMockController : Controller
     {
+        // GET: api/values
+        [HttpGet]
+        public JsonResult Get()
+        {
+            return Json(SensorNodeMocks.SensorNodes);
+        }
+
         // GET api/values/5
         [HttpGet("{id}")]
         public JsonResult Get(Guid id)
         {
-            var mainService = new MainService();
-            var sensorNodeData = mainService.GetSensorNodeData(id).ToList().Select(x => x.ToSensorNodeDataDto()).ToList();
-
-            return Json(sensorNodeData);
+            var sensorNode = SensorNodeMocks.SensorNodes.SingleOrDefault(h => h.Id == id);
+            return Json(sensorNode);
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]SensorNodeData value)
+        public void Post([FromBody]SensorNode value)
         {
             var mainService = new MainService();
-            mainService.AddSensorNodeData(value.ToSensorNodeData());
+            mainService.AddSensorNode(value.ToSensorNode());
         }
 
         // PUT api/values/5

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using PMS.Backend.Mocks;
 using PMS.Backend.Contract.Dto;
 using PMS.Backend.Implementation;
 using PMS.Backend.Mappers;
@@ -10,16 +11,17 @@ using PMS.Backend.Mappers;
 namespace PMS.Backend.Controllers
 {
     [Route("api/[controller]")]
-    public class SensorNodeDataController : Controller
+    public class SensorNodeDataMockController : Controller
     {
         // GET api/values/5
         [HttpGet("{id}")]
         public JsonResult Get(Guid id)
         {
-            var mainService = new MainService();
-            var sensorNodeData = mainService.GetSensorNodeData(id).ToList().Select(x => x.ToSensorNodeDataDto()).ToList();
+            var sensorNodeData = SensorNodeDataMocks.SensorNodeData.Where(d => d.SensorNodeId == id);
+            if (sensorNodeData == null)
+                return Json(Enumerable.Empty<SensorNodeData>());
 
-            return Json(sensorNodeData);
+            return Json(SensorNodeDataMocks.SensorNodeData);
         }
 
         // POST api/values

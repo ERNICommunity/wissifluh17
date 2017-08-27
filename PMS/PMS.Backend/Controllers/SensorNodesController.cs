@@ -17,14 +17,19 @@ namespace PMS.Backend.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            return Json(SensorNodeMocks.SensorNodes);
+            var mainService = new MainService();
+            var sensorNodes = mainService.GetAllSensorNodes().ToList().Select(x => x.ToSensorNodeDto()).ToList();
+
+            return Json(sensorNodes);
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         public JsonResult Get(Guid id)
         {
-            var sensorNode = SensorNodeMocks.SensorNodes.SingleOrDefault(h => h.Id == id);
+            var mainService = new MainService();
+            var sensorNode = mainService.GetSensorNode(id).ToSensorNodeDto();
+            
             return Json(sensorNode);
         }
 
