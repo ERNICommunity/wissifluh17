@@ -9,6 +9,7 @@
 #define LIB_HMI_HMI_H_
 
 class LcdKeypad;
+class Screen;
 
 class Hmi
 {
@@ -18,11 +19,16 @@ public:
 
   void setRelHumidity(float relHumidity);
   void setTemperature(float temperature);
-  void setPm(float pm10Average, float pm25Average);
+  void setPm(float pm10, float pm25);
 
-private:
-  void updateDisplayRelHumidityTemperature();
-  void updateDisplayPm();
+  float getRelHumidity();
+  float getTemperature();
+  float getPm10();
+  float getPm25();
+
+  void switchNext();
+
+  LcdKeypad* lcd();
 
 private:
   LcdKeypad* m_lcdKeypad;
@@ -30,6 +36,7 @@ private:
   float m_temperature;
   float m_pm10;
   float m_pm25;
+  Screen* m_currentScreen;
 
 private: // forbidden default functions
   Hmi& operator = (const Hmi& src); // assignment operator

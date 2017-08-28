@@ -6,6 +6,7 @@
  */
 
 #include <LcdKeypad.h>
+#include <Screen.h>
 #include <Hmi.h>
 
 //-----------------------------------------------------------------------------
@@ -15,17 +16,20 @@ class MyLcdKeypadAdapter : public LcdKeypadAdapter
 {
 private:
   LcdKeypad* m_lcdKeypad;
+  Hmi* m_hmi;
   unsigned char m_value;
+
 public:
-  MyLcdKeypadAdapter(LcdKeypad* lcdKeypad)
+  MyLcdKeypadAdapter(LcdKeypad* lcdKeypad, Hmi* hmi)
   : m_lcdKeypad(lcdKeypad)
+  , m_hmi(hmi)
   , m_value(7)
   { }
 
   // Specific handleKeyChanged() method implementation - define your actions here
   void handleKeyChanged(LcdKeypad::Key newKey)
   {
-    if (0 != m_lcdKeypad)
+    if ((0 != m_lcdKeypad) && (0 != m_hmi))
     {
       if (LcdKeypad::UP_KEY == newKey)
       {
@@ -35,6 +39,10 @@ public:
       {
         m_value--;
       }
+      else if (LcdKeypad::SELECT_KEY == newKey)
+      {
+        m_hmi->switchNext();
+      }
 
       // RGB colored backlight: set according to the current value
       m_lcdKeypad->setBacklight(static_cast<LcdKeypad::LcdBacklightColor>(LcdKeypad::LCDBL_WHITE & m_value));
@@ -42,21 +50,33 @@ public:
   }
 };
 
+//-----------------------------------------------------------------------------
+
 Hmi::Hmi()
 : m_lcdKeypad(new LcdKeypad())
 , m_relHumidity(0.0)
 , m_temperature(0.0)
 , m_pm10(0.0)
 , m_pm25(0.0)
+, m_currentScreen(0)
 {
-  m_lcdKeypad->attachAdapter(new MyLcdKeypadAdapter(m_lcdKeypad));
+  m_lcdKeypad->attachAdapter(new MyLcdKeypadAdapter(m_lcdKeypad, this));
   m_lcdKeypad->setBackLightOn(true);
+
+  m_currentScreen = new HumTempScreen(this);
+  m_currentScreen->setNext(new PmScreen(this));
+  m_currentScreen->next()->setNext(m_currentScreen);
 }
 
 Hmi::~Hmi()
 {
   delete m_lcdKeypad;
   m_lcdKeypad = 0;
+}
+
+LcdKeypad* Hmi::lcd()
+{
+  return m_lcdKeypad;
 }
 
 void Hmi::setRelHumidity(float relHumidity)
@@ -67,32 +87,46 @@ void Hmi::setRelHumidity(float relHumidity)
 void Hmi::setTemperature(float temperature)
 {
   m_temperature = temperature;
-  updateDisplayRelHumidityTemperature();
+  if (0 != m_currentScreen)
+  {
+    m_currentScreen->updateDisplay();
+  }
 }
 
 void Hmi::setPm(float pm10, float pm25)
 {
   m_pm10 = pm10;
   m_pm25 = pm25;
-  updateDisplayPm();
+  if (0 != m_currentScreen)
+  {
+    m_currentScreen->updateDisplay();
+  }
 }
 
-void Hmi::updateDisplayRelHumidityTemperature()
+float Hmi::getRelHumidity()
 {
-  m_lcdKeypad->setCursor(0, 0); // position the cursor at beginning of the first line
-  m_lcdKeypad->print("Temp:  ");
-  m_lcdKeypad->print(m_temperature);
-  m_lcdKeypad->setCursor(0, 1); // position the cursor at beginning of the second line
-  m_lcdKeypad->print("Humid: ");
-  m_lcdKeypad->print(m_relHumidity);
+  return m_relHumidity;
 }
 
-void Hmi::updateDisplayPm()
+float Hmi::getTemperature()
 {
-  m_lcdKeypad->setCursor(0, 0); // position the cursor at beginning of the first line
-  m_lcdKeypad->print("PM 10:  ");
-  m_lcdKeypad->print(m_pm10);
-  m_lcdKeypad->setCursor(0, 1); // position the cursor at beginning of the second line
-  m_lcdKeypad->print("PM 2.5: ");
-  m_lcdKeypad->print(m_pm25);
+  return m_temperature;
+}
+
+float Hmi::getPm10()
+{
+  return m_pm10;
+}
+
+float Hmi::getPm25()
+{
+  getPm25();
+}
+
+void Hmi::switchNext()
+{
+  if (0 != m_currentScreen)
+  {
+    m_currentScreen = m_currentScreen->next();
+  }
 }
