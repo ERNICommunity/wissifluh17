@@ -82,6 +82,10 @@ LcdKeypad* Hmi::lcd()
 void Hmi::setRelHumidity(float relHumidity)
 {
   m_relHumidity = relHumidity;
+  if (0 != m_currentScreen)
+  {
+    m_currentScreen->updateDisplay();
+  }
 }
 
 void Hmi::setTemperature(float temperature)
@@ -120,7 +124,7 @@ float Hmi::getPm10()
 
 float Hmi::getPm25()
 {
-  getPm25();
+  return m_pm25;
 }
 
 void Hmi::switchNext()
@@ -128,5 +132,6 @@ void Hmi::switchNext()
   if (0 != m_currentScreen)
   {
     m_currentScreen = m_currentScreen->next();
+    m_currentScreen->updateDisplay();
   }
 }

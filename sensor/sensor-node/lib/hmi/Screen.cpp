@@ -46,9 +46,11 @@ void HumTempScreen::updateDisplay()
   lcd->setCursor(0, 0); // position the cursor at beginning of the first line
   lcd->print("Temp:  ");
   lcd->print(hmi()->getTemperature());
+  lcd->print(" *C ");
   lcd->setCursor(0, 1); // position the cursor at beginning of the second line
   lcd->print("Humid: ");
   lcd->print(hmi()->getRelHumidity());
+  lcd->print(" %  ");
 }
 
 //-----------------------------------------------------------------------------
@@ -64,9 +66,11 @@ void PmScreen::updateDisplay()
 {
   LcdKeypad* lcd = hmi()->lcd();
   lcd->setCursor(0, 0); // position the cursor at beginning of the first line
-  lcd->print("PM 10:  ");
+  lcd->print("PM10: ");
   lcd->print(hmi()->getPm10());
+  lcd->print("ug/m3");
   lcd->setCursor(0, 1); // position the cursor at beginning of the second line
-  lcd->print("PM 2.5: ");
+  lcd->print("PM2.5:");
   lcd->print(hmi()->getPm25());
+  lcd->print("ug/m3");
 }
