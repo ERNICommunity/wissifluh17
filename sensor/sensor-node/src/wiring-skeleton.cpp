@@ -31,6 +31,8 @@
 #include <SDS011.h>
 #include <TemperatureHumidity.h>
 #include <Hmi.h>
+#include <MyTemperatureHumidityAdapter.h>
+#include <MyPmAdapter.h>
 
 #define HMI 0
 
@@ -42,56 +44,6 @@ SerialCommand* sCmd = 0;
 SDS011* pmSensor = 0;
 TemperatureHumidity* temperatureHumidity = 0;
 Hmi* hmi = 0;
-
-//-----------------------------------------------------------------------------
-
-class MyTemperatureHumidityAdapter : public TemperatureHumidityAdapter
-{
-private:
-  Hmi* m_hmi;
-
-public:
-  MyTemperatureHumidityAdapter(Hmi* hmi)
-  : m_hmi(hmi)
-  { }
-
-  void notifyTemperatureChanged(float temperature)
-  {
-    if (0 != m_hmi)
-    {
-      m_hmi->setTemperature(temperature);
-    }
-  }
-
-  void notifyRelHumidityChanged(float relHumidity)
-  {
-    if (0 != m_hmi)
-    {
-      m_hmi->setRelHumidity(relHumidity);
-    }
-  }
-};
-
-//-----------------------------------------------------------------------------
-
-class MyPmAdapter : public PmAdapter
-{
-private:
-  Hmi* m_hmi;
-
-public:
-  MyPmAdapter(Hmi* hmi)
-  : m_hmi(hmi)
-  { }
-
-  void notifyPmChanged(float pm10, float pm25)
-  {
-    if (0 != m_hmi)
-    {
-      m_hmi->setPm(pm10, pm25);
-    }
-  }
-};
 
 //-----------------------------------------------------------------------------
 
@@ -111,6 +63,8 @@ void setup()
 
   temperatureHumidity = new TemperatureHumidity(new MyTemperatureHumidityAdapter(hmi));
 }
+
+//-----------------------------------------------------------------------------
 
 void loop()
 {
