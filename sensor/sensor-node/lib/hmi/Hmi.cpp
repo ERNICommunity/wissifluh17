@@ -7,6 +7,7 @@
 
 #include <LcdKeypad.h>
 #include <Screen.h>
+#include <Timer.h>
 #include <Hmi.h>
 
 //-----------------------------------------------------------------------------
@@ -52,6 +53,26 @@ public:
 
 //-----------------------------------------------------------------------------
 
+class ScreenChangeTimerAdapter : public TimerAdapter
+{
+private:
+  Hmi* m_hmi;
+public:
+  ScreenChangeTimerAdapter(Hmi* hmi)
+  : m_hmi(hmi)
+  { }
+
+  void timeExpired()
+  {
+    if (0 != m_hmi)
+    {
+      m_hmi->switchNext();
+    }
+  }
+};
+
+//-----------------------------------------------------------------------------
+
 Hmi::Hmi()
 : m_lcdKeypad(new LcdKeypad())
 , m_relHumidity(0.0)
@@ -59,6 +80,7 @@ Hmi::Hmi()
 , m_pm10(0.0)
 , m_pm25(0.0)
 , m_currentScreen(0)
+, m_screenChangeTimer(new Timer(new ScreenChangeTimerAdapter(this), Timer::IS_RECURRING, 5000))
 {
   m_lcdKeypad->attachAdapter(new MyLcdKeypadAdapter(m_lcdKeypad, this));
   m_lcdKeypad->setBackLightOn(true);

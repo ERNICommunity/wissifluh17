@@ -10,6 +10,7 @@
 
 class LcdKeypad;
 class Screen;
+class Timer;
 
 class Hmi
 {
@@ -37,6 +38,7 @@ private:
   float m_pm10;
   float m_pm25;
   Screen* m_currentScreen;
+  Timer* m_screenChangeTimer;
 
 private: // forbidden default functions
   Hmi& operator = (const Hmi& src); // assignment operator
