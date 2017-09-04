@@ -39,12 +39,12 @@ public:
 
   void init(uint32_t baudrate) { m_serial->begin(baudrate); }
 
-  double getPm10Average();
-  double getPm25Average();
+  float getPm10Average();
+  float getPm25Average();
 
 private:
   bool validateChecksum();
-  void storeToBuffer(double pm10, double pm25);
+  void storeToBuffer(float pm10, float pm25);
 
 private:
   HardwareSerial* m_serial;
@@ -52,8 +52,8 @@ private:
   uint8_t m_data[10];
 
   static const uint8_t BUFFER_SIZE = 60;  // Buffer for average calculation
-  double m_pm10[BUFFER_SIZE];
-  double m_pm25[BUFFER_SIZE];
+  float m_pm10[BUFFER_SIZE];
+  float m_pm25[BUFFER_SIZE];
 
   PmAdapter* m_pmAdapter;
 };
