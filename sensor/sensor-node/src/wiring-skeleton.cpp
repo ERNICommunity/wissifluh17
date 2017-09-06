@@ -33,6 +33,7 @@
 #include <Hmi.h>
 #include <MyTemperatureHumidityAdapter.h>
 #include <MyPmAdapter.h>
+#include <LmicWrapper.h>
 
 #define HMI 0
 
@@ -62,6 +63,8 @@ void setup()
   pmSensor->init(9600);
 
   temperatureHumidity = new TemperatureHumidity(new MyTemperatureHumidityAdapter(hmi));
+
+  lmicSetup();
 }
 
 //-----------------------------------------------------------------------------
@@ -73,5 +76,6 @@ void loop()
     sCmd->readSerial();     // process serial commands
   }
   pmSensor->pollSerialData();
+  lmicLoop();
   yield();                  // process Timers
 }
