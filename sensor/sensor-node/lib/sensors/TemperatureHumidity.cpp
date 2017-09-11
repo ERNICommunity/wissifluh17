@@ -23,7 +23,7 @@ private:
 
 public:
   DhtPollTimerAdapter(DHT_Unified* dht, TemperatureHumidity* temperatureHumidity)
-  : m_trPort(new DbgTrace_Port("dht", DbgTrace_Level::debug))
+  : m_trPort(new DbgTrace_Port("dht", DbgTrace_Level::critical))
   , m_dht(dht)
   , m_temperatureHumidity(temperatureHumidity)
   { }

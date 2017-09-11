@@ -53,6 +53,8 @@ void setup()
   pinMode(BUILTIN_LED, OUTPUT);
   digitalWrite(BUILTIN_LED, 0);
 
+  delay(5000);
+
   setupProdDebugEnv();
 
 #if HMI
@@ -76,6 +78,6 @@ void loop()
     sCmd->readSerial();     // process serial commands
   }
   pmSensor->pollSerialData();
-  lmicLoop();
+//  lmicLoop();
   yield();                  // process Timers
 }

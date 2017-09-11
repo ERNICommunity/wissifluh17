@@ -5,10 +5,10 @@
  *      Author: nid
  */
 
+#include <Arduino.h>
 #include <lmic.h>
 #include <hal/hal.h>
 #include <LmicWrapper.h>
-#include <Arduino.h>
 
 void AirTimerAdapter::timeExpired()
 {
@@ -36,7 +36,7 @@ void os_getDevKey (u1_t* buf) { }
 
 // Schedule TX every this many seconds (might become longer due to duty
 // cycle limitations).
-const unsigned TX_INTERVAL = 180; // 3 min
+const unsigned TX_INTERVAL = 60; // 1 min
 
 // Pin mapping
 #if defined (ARDUINO_ARCH_SAMD) && defined (__SAMD21G18A__) // Adafruit Feather M0 (LoRa)
@@ -44,7 +44,7 @@ const lmic_pinmap lmic_pins = {
   .nss = 8,
   .rxtx = LMIC_UNUSED_PIN,
   .rst = 4,
-  .dio = {3, 6, 11},
+  .dio = {3, 6, LMIC_UNUSED_PIN},
 };
 #else
 // Pin mapping Dragino Shield
@@ -91,9 +91,9 @@ void onEvent (ev_t ev)
     case EV_TXCOMPLETE:
       Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
       if (LMIC.dataLen)
-	  {
+	    {
         // data received in rx slot after tx
-        Serial.print(F("Data Received: "));
+        Serial.print("Data Received: ");
         Serial.write(LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
         Serial.println();
       }
@@ -160,8 +160,9 @@ void do_send(osjob_t* j)
    
     LMIC_setTxData2(1, message, sizeof(message)-1, 0);
 
-    Serial.println(F("Sending uplink packet..."));
+    Serial.println("Sending uplink packet...");
 
+    Serial.print("Size of the message: ");
     Serial.println(sizeof(message));
     for (unsigned int i = 0; i < sizeof(message); i++)
     {
@@ -176,7 +177,7 @@ void do_send(osjob_t* j)
 
 void lmicSetup()
 {
-//  new Timer(new AirTimerAdapter(), Timer::IS_RECURRING, 60000);
+  new Timer(new AirTimerAdapter(), Timer::IS_RECURRING, 1000);
 
   // LMIC init
   os_init();
@@ -185,7 +186,7 @@ void lmicSetup()
   LMIC_reset();
 
   // Set static session parameters.
-  LMIC_setSession (0x1, DEVADDR, NWKSKEY, APPSKEY);
+  LMIC_setSession(0x1, DEVADDR, NWKSKEY, APPSKEY);
 
   // Set up the channels used by the Things Network, which corresponds
   // to the defaults of most gateways. Without this, only three base

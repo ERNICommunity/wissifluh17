@@ -37,9 +37,9 @@ void setupProdDebugEnv()
   setupDebugEnv();
 
   Serial.println();
-  Serial.println("---------------------------------------------");
-  Serial.println("Hello from Wiring Controller!");
-  Serial.println("---------------------------------------------");
+  Serial.println("-----------------------------------------------------------------------");
+  Serial.println("Welcome to the ERNI Community HnH17 Sensor Node Controller Application!");
+  Serial.println("-----------------------------------------------------------------------");
   Serial.println();
 }
 

@@ -14,12 +14,7 @@ class AirTimerAdapter : public TimerAdapter
 {
 public:
   void timeExpired();
-
-public:   // forbidden default functions
-  AirTimerAdapter& operator= (const AirTimerAdapter& src);  // assignment operator
-  AirTimerAdapter(const AirTimerAdapter& src);              // copy constructor
 };
-
 
 static osjob_t sendjob;
 
