@@ -4,7 +4,6 @@
  *  Created on: 27.08.2017
  *      Author: nid
  */
-
 #include <LcdKeypad.h>
 #include <Screen.h>
 #include <Timer.h>
@@ -82,8 +81,11 @@ Hmi::Hmi()
 , m_currentScreen(0)
 , m_screenChangeTimer(new Timer(new ScreenChangeTimerAdapter(this), Timer::IS_RECURRING, 5000))
 {
-  m_lcdKeypad->attachAdapter(new MyLcdKeypadAdapter(m_lcdKeypad, this));
-  m_lcdKeypad->setBackLightOn(true);
+  if (0 != m_lcdKeypad)
+  {
+    m_lcdKeypad->attachAdapter(new MyLcdKeypadAdapter(m_lcdKeypad, this));
+    m_lcdKeypad->setBackLightOn(true);
+  }
 
   m_currentScreen = new HumTempScreen(this);
   m_currentScreen->setNext(new PmScreen(this));

@@ -13,7 +13,7 @@ class Hmi;
 class Screen
 {
 protected:
-  Screen(Hmi* hmi);
+  Screen(Hmi* hmi, const char* name);
 
 public:
   virtual ~Screen();
@@ -25,9 +25,12 @@ public:
 
   virtual void updateDisplay()  = 0;
 
+  const char* name();
+
 private:
   Hmi* m_hmi;
   Screen* m_next;
+  const char* m_name;
 
 private: // forbidden default functions
   Screen();                               // default constructor

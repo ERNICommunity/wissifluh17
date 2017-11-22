@@ -8,9 +8,10 @@
 #include <Hmi.h>
 #include <Screen.h>
 
-Screen::Screen(Hmi* hmi)
+Screen::Screen(Hmi* hmi, const char* name)
 : m_hmi(hmi)
 , m_next(0)
+, m_name(name)
 { }
 
 Screen::~Screen()
@@ -31,10 +32,15 @@ Hmi* Screen::hmi()
   return m_hmi;
 }
 
+const char* Screen::name()
+{
+  return m_name;
+}
+
 //-----------------------------------------------------------------------------
 
 HumTempScreen::HumTempScreen(Hmi* hmi)
-: Screen(hmi)
+: Screen(hmi, "TempScreen")
 { }
 
 HumTempScreen::~HumTempScreen()
@@ -56,7 +62,7 @@ void HumTempScreen::updateDisplay()
 //-----------------------------------------------------------------------------
 
 PmScreen::PmScreen(Hmi* hmi)
-: Screen(hmi)
+: Screen(hmi, "PmScreen")
 { }
 
 PmScreen::~PmScreen()

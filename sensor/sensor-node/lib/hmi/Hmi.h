@@ -31,6 +31,11 @@ public:
 
   LcdKeypad* lcd();
 
+  // Test Code
+  Hmi* hmi();
+  Timer* screenChangeTimer();
+  Screen* currentScreen();
+
 private:
   LcdKeypad* m_lcdKeypad;
   float m_relHumidity;
