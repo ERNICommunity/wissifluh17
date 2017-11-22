@@ -6,10 +6,12 @@
  */
 
 #include <Hmi.h>
+#include <LoRaTxData.h>
 #include <MyTemperatureHumidityAdapter.h>
 
-MyTemperatureHumidityAdapter::MyTemperatureHumidityAdapter(Hmi* hmi)
+MyTemperatureHumidityAdapter::MyTemperatureHumidityAdapter(Hmi* hmi, LoRaTxData* loRaTxData)
 : m_hmi(hmi)
+, m_loRaTxData(loRaTxData)
 { }
 
 MyTemperatureHumidityAdapter::~MyTemperatureHumidityAdapter()
@@ -17,6 +19,10 @@ MyTemperatureHumidityAdapter::~MyTemperatureHumidityAdapter()
 
 void MyTemperatureHumidityAdapter::notifyTemperatureChanged(float temperature)
 {
+  if (0 != m_loRaTxData)
+  {
+    m_loRaTxData->setTemperature(temperature);
+  }
   if (0 != m_hmi)
   {
     m_hmi->setTemperature(temperature);
@@ -25,6 +31,10 @@ void MyTemperatureHumidityAdapter::notifyTemperatureChanged(float temperature)
 
 void MyTemperatureHumidityAdapter::notifyRelHumidityChanged(float relHumidity)
 {
+  if (0 != m_loRaTxData)
+  {
+    m_loRaTxData->setHumidity(relHumidity);
+  }
   if (0 != m_hmi)
   {
     m_hmi->setRelHumidity(relHumidity);

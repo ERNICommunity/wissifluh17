@@ -11,14 +11,16 @@
 #include <SDS011.h>
 
 class Hmi;
+class LoRaTxData;
 
 class MyPmAdapter : public PmAdapter
 {
 private:
   Hmi* m_hmi;
+  LoRaTxData* m_loRaTxData;
 
 public:
-  MyPmAdapter(Hmi* hmi);
+  MyPmAdapter(Hmi* hmi, LoRaTxData* loRaTxData);
   virtual ~MyPmAdapter();
 
   void notifyPmChanged(float pm10, float pm25);

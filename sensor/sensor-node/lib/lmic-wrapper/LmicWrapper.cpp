@@ -5,9 +5,7 @@
  *      Author: nid
  */
 
-#include <Arduino.h>
-#include <lmic.h>
-#include <hal/hal.h>
+#include <LoRaTxData.h>
 #include <LmicWrapper.h>
 
 void AirTimerAdapter::timeExpired()
@@ -36,7 +34,11 @@ void os_getDevKey (u1_t* buf) { }
 
 // Schedule TX every this many seconds (might become longer due to duty
 // cycle limitations).
-const unsigned TX_INTERVAL = 60; // 1 min
+const unsigned int TX_INTERVAL = 60; // 1 min
+
+// Payload to send (uplink)
+const int cMsgSize = LoRaTxData::c_LoRaTxDataSize;
+unsigned char* message;
 
 // Pin mapping
 #if defined (ARDUINO_ARCH_SAMD) && defined (__SAMD21G18A__) // Adafruit Feather M0 (LoRa)
@@ -124,47 +126,22 @@ void onEvent (ev_t ev)
 
 void do_send(osjob_t* j)
 {
-  // Payload to send (uplink)
-  static uint8_t message[] = "hi";
-
   // Check if there is not a current TX/RX job running
   if (LMIC.opmode & OP_TXRXPEND)
   {
-    Serial.println(F("OP_TXRXPEND, not sending"));
+    Serial.println("OP_TXRXPEND, not sending");
   } 
   else
   {
-//    // Prepare upstream data transmission at the next possible time.
-//    int8_t *no2_aux = call_no2();
-//    int16_t temp_aux = (int16_t)(call_temp()*100);
-//    int8_t hum_aux = call_hum();
-//    int8_t *pm_aux = call_pm();
-//    //build the array
-//    //op1
-//    mydata[0] = *(no2_aux);
-//    mydata[1] = *(no2_aux+1);
-//    //op2
-//    mydata[2] = *(no2_aux+2);
-//    mydata[3] = *(no2_aux+3);
-//    //temp
-//    mydata[4] = temp_aux >> 8;
-//    mydata[5] = temp_aux & 0xFF;
-//    //hum
-//    mydata[6] = hum_aux;
-//    //pm2.5
-//    mydata[7] = *(pm_aux);
-//    mydata[8] = *(pm_aux+1);
-//    //pm10
-//    mydata[9] = *(pm_aux+2);
-//    mydata[10] = *(pm_aux+3);
-   
-    LMIC_setTxData2(1, message, sizeof(message)-1, 0);
+    LoRaTxData::Instance()->updateTxData(message, cMsgSize);
+
+    LMIC_setTxData2(1, message, cMsgSize, 0);
 
     Serial.println("Sending uplink packet...");
 
     Serial.print("Size of the message: ");
-    Serial.println(sizeof(message));
-    for (unsigned int i = 0; i < sizeof(message); i++)
+    Serial.println(cMsgSize);
+    for (unsigned int i = 0; i < cMsgSize; i++)
     {
       Serial.print("message[");
       Serial.print(i);
@@ -219,7 +196,7 @@ void lmicSetup()
   // Set data rate and transmit power for uplink (note: txpow seems to be ignored by the library)
   LMIC_setDrTxpow(DR_SF7, 14);
 
-#if 1
+#if 0
   for (int i=1; i<=8; i++)
   {
     LMIC_disableChannel(i);

@@ -31,11 +31,12 @@
 #include <SDS011.h>
 #include <TemperatureHumidity.h>
 #include <Hmi.h>
+#include <LoRaTxData.h>
 #include <MyTemperatureHumidityAdapter.h>
 #include <MyPmAdapter.h>
 #include <LmicWrapper.h>
 
-#define HMI 0
+#define HMI 1
 
 #ifndef BUILTIN_LED
 #define BUILTIN_LED 13
@@ -61,10 +62,10 @@ void setup()
   hmi = new Hmi();
 #endif
 
-  pmSensor = new SDS011(&Serial1, new MyPmAdapter(hmi));
+  pmSensor = new SDS011(&Serial1, new MyPmAdapter(hmi, LoRaTxData::Instance()));
   pmSensor->init(9600);
 
-  temperatureHumidity = new TemperatureHumidity(new MyTemperatureHumidityAdapter(hmi));
+  temperatureHumidity = new TemperatureHumidity(new MyTemperatureHumidityAdapter(hmi, LoRaTxData::Instance()));
 
   lmicSetup();
 }

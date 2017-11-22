@@ -8,6 +8,10 @@
 #ifndef LIB_LMIC_WRAPPER_LMICWRAPPER_H_
 #define LIB_LMIC_WRAPPER_LMICWRAPPER_H_
 
+
+#include <Arduino.h>
+#include <lmic.h>
+#include <hal/hal.h>
 #include <Timer.h>
 
 class AirTimerAdapter : public TimerAdapter
@@ -29,6 +33,5 @@ void onEvent (ev_t ev);
 void do_send(osjob_t* j);
 void lmicSetup();
 void lmicLoop();
-
 
 #endif /* LIB_LMIC_WRAPPER_LMICWRAPPER_H_ */

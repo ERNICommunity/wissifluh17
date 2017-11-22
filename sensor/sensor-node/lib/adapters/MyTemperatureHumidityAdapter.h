@@ -11,11 +11,12 @@
 #include <TemperatureHumidity.h>
 
 class Hmi;
+class LoRaTxData;
 
 class MyTemperatureHumidityAdapter : public TemperatureHumidityAdapter
 {
 public:
-  MyTemperatureHumidityAdapter(Hmi* hmi);
+  MyTemperatureHumidityAdapter(Hmi* hmi, LoRaTxData* loRaTxData);
   virtual ~MyTemperatureHumidityAdapter();
 
   void notifyTemperatureChanged(float temperature);
@@ -23,6 +24,7 @@ public:
 
 private:
   Hmi* m_hmi;
+  LoRaTxData* m_loRaTxData;
 
 private: // forbidden default functions
   MyTemperatureHumidityAdapter();                                                     // default constructor
