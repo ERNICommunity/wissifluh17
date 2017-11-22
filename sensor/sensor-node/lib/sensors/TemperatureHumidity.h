@@ -8,14 +8,6 @@
 #ifndef SRC_TEMPERATUREHUMIDITY_H_
 #define SRC_TEMPERATUREHUMIDITY_H_
 
-#include <DbgTracePort.h>
-//#include <DbgTraceContext.h>
-//#include <DbgTraceOut.h>
-//#include <DbgPrintConsole.h>
-#include <DbgTraceLevel.h>
-
-//class DbgTrace_Port;
-//class DbgTrace_Level;
 class DHT_Unified;
 class Timer;
 

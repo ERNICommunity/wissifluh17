@@ -5,8 +5,21 @@
  *      Author: scan
  */
 
+#include <DbgTracePort.h>
+#include <DbgTraceLevel.h>
 #include <SDS011.h>
 
+SDS011::SDS011(HardwareSerial* serial, PmAdapter* pmAdapter)
+: m_serial(serial)
+, m_readIndex(0)
+, m_data()
+, m_pm10()
+, m_pm25()
+, m_pmAdapter(pmAdapter)
+, m_trPort(new DbgTrace_Port("pm", DbgTrace_Level::info))
+{  }
+
+SDS011::~SDS011() { }
 
 void SDS011::pollSerialData() {
   if (m_serial->available())
@@ -25,10 +38,7 @@ void SDS011::pollSerialData() {
 		  float pm25 = (float)(((int)m_data[3])*256 +((int)m_data[2]))/10;
 		  float pm10 = (float)(((int)m_data[5])*256 +((int)m_data[4]))/10;
 		  storeToBuffer(pm10, pm25);
-		  Serial.print("PM25: ");
-		  Serial.print(pm25);
-		  Serial.print("        PM10: ");
-		  Serial.println(pm10);
+		  TR_PRINTF(m_trPort, DbgTrace_Level::debug, "PM25: %f, PM10: %f", pm25, pm10);
 		  m_readIndex = 0;
 	  }
 	  else {

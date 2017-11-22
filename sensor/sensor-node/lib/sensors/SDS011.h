@@ -10,6 +10,8 @@
 
 #include <Arduino.h>
 
+class DbgTrace_Port;
+
 class PmAdapter
 {
 public:
@@ -20,16 +22,8 @@ public:
 class SDS011
 {
 public:
-  SDS011(HardwareSerial* serial, PmAdapter* pmAdapter = 0)
-  : m_serial(serial)
-  , m_readIndex(0)
-  , m_data()
-  , m_pm10()
-  , m_pm25()
-  , m_pmAdapter(pmAdapter)
-  {  }
-
-  virtual ~SDS011() {}
+  SDS011(HardwareSerial* serial, PmAdapter* pmAdapter = 0);
+  virtual ~SDS011();
 
 public:
   /**
@@ -56,6 +50,7 @@ private:
   float m_pm25[BUFFER_SIZE];
 
   PmAdapter* m_pmAdapter;
+  DbgTrace_Port* m_trPort;
 };
 
 

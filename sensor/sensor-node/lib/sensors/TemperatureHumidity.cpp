@@ -9,6 +9,8 @@
 #include <DHT.h>
 #include <DHT_U.h>
 #include <Timer.h>
+#include <DbgTracePort.h>
+#include <DbgTraceLevel.h>
 #include <TemperatureHumidity.h>
 
 #define DHTPIN      12        // Pin which is connected to the DHT sensor.
