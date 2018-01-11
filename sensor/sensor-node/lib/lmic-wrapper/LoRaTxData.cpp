@@ -65,7 +65,7 @@ void LoRaTxData::setTemperature(float temperature)
   m_temperature = temperature;
 }
 
-void LoRaTxData::updateTxData(unsigned char* txData, unsigned int txDataSize)
+void LoRaTxData::prepareTxData(unsigned char* txData, unsigned int txDataSize)
 {
   short int temp = static_cast<short int>(100.0 * m_temperature);
   m_loRaTxData[0] = temp >> 8;

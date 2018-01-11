@@ -22,7 +22,7 @@ public:
   void setHumidity(float humidity);
   void setTemperature(float temperature);
 
-  void updateTxData(unsigned char* txData, unsigned int txDataSize);
+  void prepareTxData(unsigned char* txData, unsigned int txDataSize);
 
   static LoRaTxData* Instance();
 

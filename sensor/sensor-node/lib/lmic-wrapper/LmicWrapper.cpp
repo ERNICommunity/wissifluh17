@@ -133,7 +133,7 @@ void do_send(osjob_t* j)
   } 
   else
   {
-    LoRaTxData::Instance()->updateTxData(message, cMsgSize);
+    LoRaTxData::Instance()->prepareTxData(message, cMsgSize);
 
     LMIC_setTxData2(1, message, cMsgSize, 0);
 
