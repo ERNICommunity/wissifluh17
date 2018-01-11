@@ -62,9 +62,14 @@ Load the _hterm-com10.cfg_ file to configure HTerm properly. Alter the COM10 acc
 
 
 ### Trace Port
-|Trace Port|default level|functionality|
-|----------|-------------|:------------|
+
+| Trace Port | default level | functionality |
+|:-----------|:--------------|:--------------|
 |heap|info|if set to debug level: automatically print free heap memory [bytes], every 10 seconds|
+|dht|critical|if set to error level: DHT22 sensor read out errors would be printed|
+|pm|info|if set to debug level: print PM sensor read outs||
+
+
 
 ## Library Usage
 This chapter lists all the libraries this project is using.
@@ -74,13 +79,17 @@ This chapter lists all the libraries this project is using.
 |:--|:-------|:----------------|:-----------------------|
 |173|SerialCommand|https://github.com/kroimon/Arduino-SerialCommand|A Wiring/Arduino library to tokenize and parse commands received over a serial port.|
 |1699|wiring-timer|https://github.com/dniklaus/wiring-timer|Universal recurring or non-recurring Timer|
+| | DHT sensor library | | |
 
 
 
 ### Homebrew Libraries
 |Name|URL|Description|
 |:------|:---------------------|:-------------------------------|
+|arduino-lmic|https://github.com/matthijskooijman/arduino-lmic| |
 |Debug-Cli|https://github.com/ERNICommunity/debug-cli|Debug CLI for Embedded Applications - Command Line  Interface for debugging and testing based on object oriented tree structure.|
 |Dbg-Trace|https://github.com/ERNICommunity/dbg-trace|Debug Trace component for Embedded Applications - Debug and Trace Log message system based on trace ports with adjustable levels.|
 |RamUtils|https://github.com/dniklaus/arduino-utils-mem|Arduino Memory Utilities|
+|wiring-app-debug| https://github.com/dniklaus/wiring-app-debug| | |
+|arduino-display-lcdkeypad| https://github.com/dniklaus/arduino-display-lcdkeypad | |
 
