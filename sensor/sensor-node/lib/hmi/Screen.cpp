@@ -4,7 +4,9 @@
  *  Created on: 28.08.2017
  *      Author: nid
  */
+#include <Arduino.h>
 #include <LcdKeypad.h>
+#include <Battery.h>
 #include <Hmi.h>
 #include <Screen.h>
 
@@ -79,4 +81,39 @@ void PmScreen::updateDisplay()
   lcd->print("PM2.5:");
   lcd->print(hmi()->getPm25());
   lcd->print("ug/m3");
+}
+
+//-----------------------------------------------------------------------------
+
+BattScreen::BattScreen(Hmi* hmi)
+: Screen(hmi, "BattScreen")
+{ }
+
+BattScreen::~BattScreen()
+{ }
+
+void BattScreen::updateDisplay()
+{
+  LcdKeypad* lcd = hmi()->lcd();
+  Battery* batt  = hmi()->battery();
+
+  lcd->setCursor(0, 0); // position the cursor at beginning of the first line
+  lcd->print("Batt: ");
+
+  if (0 != batt)
+  {
+    lcd->print(batt->getBatteryVoltage());
+    Serial.print("Batt: ");
+    Serial.print(batt->getBatteryVoltage());
+    Serial.println("V");
+    lcd->print("V");
+    lcd->setCursor(0, 1); // position the cursor at beginning of the second line
+    lcd->print("state: ");
+    lcd->print(batt->getCurrentStateName());
+  }
+  else
+  {
+    lcd->setCursor(0, 1); // position the cursor at beginning of the second line
+    lcd->print("  no data available");
+  }
 }

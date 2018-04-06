@@ -5,6 +5,7 @@
  *      Author: nid
  */
 #include <LcdKeypad.h>
+#include <Battery.h>
 #include <Screen.h>
 #include <Timer.h>
 #include <Hmi.h>
@@ -74,6 +75,7 @@ public:
 
 Hmi::Hmi()
 : m_lcdKeypad(new LcdKeypad())
+, m_battery(0)
 , m_relHumidity(0.0)
 , m_temperature(0.0)
 , m_pm10(0.0)
@@ -89,7 +91,9 @@ Hmi::Hmi()
 
   m_currentScreen = new HumTempScreen(this);
   m_currentScreen->setNext(new PmScreen(this));
-  m_currentScreen->next()->setNext(m_currentScreen);
+  // m_currentScreen->next()->setNext(new BattScreen(this));
+  // m_currentScreen->next()->next()->setNext(m_currentScreen);
+  m_currentScreen->next()->next()->setNext(m_currentScreen);
 }
 
 Hmi::~Hmi()
@@ -98,9 +102,19 @@ Hmi::~Hmi()
   m_lcdKeypad = 0;
 }
 
+void Hmi::attachBattery(Battery* battery)
+{
+  m_battery = battery;
+}
+
 LcdKeypad* Hmi::lcd()
 {
   return m_lcdKeypad;
+}
+
+Battery* Hmi::battery()
+{
+  return m_battery;
 }
 
 void Hmi::setRelHumidity(float relHumidity)

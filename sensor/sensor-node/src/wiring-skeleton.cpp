@@ -35,6 +35,8 @@
 #include <MyTemperatureHumidityAdapter.h>
 #include <MyPmAdapter.h>
 #include <LmicWrapper.h>
+#include <Battery.h>
+#include <MyBatteryAdapter.h>
 
 #define HMI 1
 
@@ -46,6 +48,7 @@ SerialCommand* sCmd = 0;
 SDS011* pmSensor = 0;
 TemperatureHumidity* temperatureHumidity = 0;
 Hmi* hmi = 0;
+Battery* battery = 0;
 
 //-----------------------------------------------------------------------------
 
@@ -61,6 +64,18 @@ void setup()
 #if HMI
   hmi = new Hmi();
 #endif
+
+  //-----------------------------------------------------------------------------
+  // Battery Voltage Surveillance
+  //-----------------------------------------------------------------------------
+  BatteryThresholdConfig battCfg = { 3.6, // BATT_WARN_THRSHD [V]
+                                     3.4, // BATT_STOP_THRSHD [V]
+                                     3.2, // BATT_SHUT_THRSHD [V]
+                                     0.1  // BATT_HYST        [V]
+                                    };
+  battery = new Battery(0, battCfg);
+  BatteryAdapter* mBatAdapter = new MyBatteryAdapter(battery, hmi);
+  battery->attachAdapter(mBatAdapter);
 
   pmSensor = new SDS011(&Serial1, new MyPmAdapter(hmi, LoRaTxData::Instance()));
   pmSensor->init(9600);

@@ -70,4 +70,19 @@ private: // forbidden default functions
 
 //-----------------------------------------------------------------------------
 
+class BattScreen : public Screen
+{
+public:
+  BattScreen(Hmi* hmi);
+  virtual ~BattScreen();
+  void updateDisplay();
+
+private: // forbidden default functions
+  BattScreen();                                   // default constructor
+  BattScreen& operator = (const BattScreen& src); // assignment operator
+  BattScreen(const BattScreen& src);              // copy constructor
+};
+
+//-----------------------------------------------------------------------------
+
 #endif /* LIB_HMI_SCREEN_H_ */

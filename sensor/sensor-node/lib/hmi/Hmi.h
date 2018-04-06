@@ -9,6 +9,7 @@
 #define LIB_HMI_HMI_H_
 
 class LcdKeypad;
+class Battery;
 class Screen;
 class Timer;
 
@@ -17,6 +18,8 @@ class Hmi
 public:
   Hmi();
   virtual ~Hmi();
+
+  void attachBattery(Battery* battery);
 
   void setRelHumidity(float relHumidity);
   void setTemperature(float temperature);
@@ -30,6 +33,7 @@ public:
   void switchNext();
 
   LcdKeypad* lcd();
+  Battery* battery();
 
   // Test Code
   Hmi* hmi();
@@ -38,6 +42,7 @@ public:
 
 private:
   LcdKeypad* m_lcdKeypad;
+  Battery* m_battery;
   float m_relHumidity;
   float m_temperature;
   float m_pm10;
